@@ -1,0 +1,97 @@
+/* Basic layout */
+* { box-sizing: border-box; }
+html,body { height:100%; margin:0; font-family: "Creepster", cursive, sans-serif; background:black; color:#fff; }
+button { font-family: inherit; }
+
+/* Start screen with background image */
+#start-screen {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* <-- prevents scrollbars during zoom */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.haunted-house {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('./src/StartScreen.jpeg') no-repeat center center;
+  background-size: cover;
+  transition: transform 3s ease-in-out;
+  z-index: 1;
+}
+
+.haunted-house.zoom {
+  transform: scale(2); /* zoom effect */
+}
+
+
+/* overlay so text & button sit above bg */
+.start-overlay {
+  position: relative; z-index: 3;
+  
+  text-align:center;
+}
+
+/* Buttons - spooky + flicker */
+.btn {
+  background: #8b0000;
+  border: 2px solid #fff;
+  color: white;
+  padding: 12px 24px;
+  margin: 10px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s;
+  animation: flicker 1.6s infinite alternate;
+  display:inline-block;
+}
+.btn:hover {
+  background:#ff0000; transform: scale(1.05) rotate(-1deg); box-shadow:0 0 25px red;
+}
+@keyframes flicker {
+  0%   { box-shadow: 0 0 5px #ff0000; filter:brightness(1); }
+  30%  { box-shadow: 0 0 18px #ff3333; filter:brightness(1.08); }
+  60%  { box-shadow: 0 0 8px #cc0000; filter:brightness(0.95); }
+  100% { box-shadow: 0 0 20px #ff4444; filter:brightness(1.1); }
+}
+
+/* Game screen (inside house) */
+#game-screen, #chase-screen { position:absolute; inset:0; display:none; align-items:center; justify-content:center; flex-direction:column; }
+#game-screen {
+  background: url('./src/inside_house.jpg') no-repeat center center/cover;
+  background-size: cover;
+}
+#trivia-container {
+  background: rgba(0,0,0,0.7);
+  border: 3px solid #660000;
+  padding: 20px 28px;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(255,0,0,0.15);
+  max-width:720px;
+  width: calc(100% - 60px);
+  text-align:center;
+}
+#answers { display:flex; flex-direction:column; gap:12px; margin-top:14px; align-items:center; }
+#answers .btn { width: 300px; }
+
+/* Chase canvas styling */
+#chaseGame { 
+    background: url('./src/corridoor.jpg') no-repeat center center/cover;
+  background-size: cover;
+         border: 3px solid #660000; box-shadow:0 0 20px rgba(255,0,0,0.2); }
+
+/* visible only when active */
+.visible { display:flex !important; }
+.hidden { display:none !important; }
+
+/* small responsive */
+@media (max-width:640px){
+  #answers .btn { width: 90%; }
+}

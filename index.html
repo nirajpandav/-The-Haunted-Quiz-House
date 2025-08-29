@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>The Haunted Quiz House</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Start Screen -->
+  <div id="start-screen">
+    <div class="haunted-house" id="hauntedHouse"></div>
+    <div class="start-overlay">
+      <h1>The Haunted Quiz House</h1>
+      <h3>by Niraj</h3>
+      <button type="button" class="btn" onclick="zoomIn()">Enter The House</button>
+    </div>
+  </div>
+
+  <!-- Game Screen (Inside the House) -->
+  <div id="game-screen" style="display:none;">
+    <h1>The Haunted Quiz House</h1>
+    <div id="trivia-container">
+      <p id="question"></p>
+      <div id="answers"></div>
+      <p id="feedback"></p>
+      <p id="score"></p>
+    </div>
+  </div>
+
+  <!-- Chase Screen -->
+  <div id="chase-screen" style="display:none;">
+    <h1>Run! The monster is chasing you!</h1>
+    <h2>Use arrow keys to escape!</h2>
+    <canvas id="chaseGame" width="1000" height="600"></canvas>
+    
+    <button type="button" class="btn" id="restart-after-chase" style="display:none;" onclick="restartAfterChase()">Play Again</button>
+    <p id="chase-msg">Use arrow keys to escape!</p>
+  </div>
+
+  <!-- 🎵 Audio -->
+  <audio id="bgCreepy" src="./src/creepy_loop.mp3" loop></audio>
+  <audio id="doorSound" src="./src/walktowardsthehouse.mp3"></audio>
+  <audio id="triviaMusic" src="./src/creepy_loop.mp3" loop></audio>
+  <audio id="scream" src="./src/scream.mp3"></audio>
+  <audio id="chaseMusic" src="./src/chase_theme.mp3" loop></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
