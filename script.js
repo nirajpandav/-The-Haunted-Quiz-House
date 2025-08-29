@@ -216,39 +216,48 @@ function startChase() {
   }, 1000);
 
   function loop() {
-    if (keys["ArrowUp"] || keys["w"]) player.y -= player.speed;
-    if (keys["ArrowDown"] || keys["s"]) player.y += player.speed;
-    if (keys["ArrowLeft"] || keys["a"]) player.x -= player.speed;
-    if (keys["ArrowRight"] || keys["d"]) player.x += player.speed;
+    // Player movement (WASD only)
+    if (keys["w"] || keys["W"]) player.y -= player.speed;
+    if (keys["s"] || keys["S"]) player.y += player.speed;
+    if (keys["a"] || keys["A"]) player.x -= player.speed;
+    if (keys["d"] || keys["D"]) player.x += player.speed;
 
+    // Clamp player inside canvas
     const halfP = player.size / 2;
     player.x = Math.max(halfP, Math.min(canvas.width - halfP, player.x));
     player.y = Math.max(halfP, Math.min(canvas.height - halfP, player.y));
 
+    // Monster chases player
     const dx = player.x - monster.x;
     const dy = player.y - monster.y;
     const dist = Math.hypot(dx, dy) || 1;
     monster.x += (dx / dist) * monster.speed;
     monster.y += (dy / dist) * monster.speed;
 
+    // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // Draw exit
+    ctx.font = "36px serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.font = "36px serif";
     ctx.fillText(exitEmoji, canvas.width - 40, canvas.height / 2);
 
+    // Draw player
     ctx.font = `${player.size}px serif`;
     ctx.fillText(player.emoji, player.x, player.y);
 
+    // Draw monster
     ctx.font = `${monster.size}px serif`;
     ctx.fillText(monster.emoji, monster.x, monster.y);
 
+    // Timer
     ctx.fillStyle = "white";
     ctx.font = "16px Arial";
     ctx.textAlign = "left";
     ctx.fillText(`Time Left: ${timeLeft}s`, 10, 20);
 
+    // Collision
     const collideDistance = (player.size + monster.size) * 0.45;
     if (dist < collideDistance) {
       endChase(false);
@@ -275,31 +284,12 @@ function startChase() {
     ctx.font = "28px Creepster, cursive";
     if (escaped) {
       ctx.fillStyle = "lime";
-      ctx.fillText("Safe… for now 😅", canvas.width / 2, canvas.height / 2);
+      ctx.fillText("You made it out alive! 😅", canvas.width / 2, canvas.height / 2);
     } else {
       ctx.fillStyle = "red";
-      ctx.fillText("Too slow! The monster claims you 💀", canvas.width / 2, canvas.height / 2);
+      ctx.fillText("Too slow! The monster got you! 💀", canvas.width / 2, canvas.height / 2);
     }
 
     document.getElementById("restart-after-chase").style.display = "inline-block";
   }
-}
-
-/* -------------------- Restart -------------------- */
-function restartAfterChase() {
-  if (chaseMusic) chaseMusic.pause();
-
-  document.getElementById("chase-screen").style.display = "none";
-  document.getElementById("hauntedHouse").classList.remove("zoom");
-  document.getElementById("start-screen").style.display = "flex";
-  document.getElementById("restart-after-chase").style.display = "none";
-
-  currentQuestion = 0;
-  score = 0;
-  document.getElementById("question").textContent = "";
-  document.getElementById("answers").innerHTML = "";
-  document.getElementById("feedback").textContent = "";
-  document.getElementById("score").textContent = "";
-
-  if (bgCreepy) bgCreepy.play();
 }
